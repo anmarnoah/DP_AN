@@ -5,11 +5,11 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="d586f745-464f-4e57-8f1f-d0568143960c" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/src/Adres.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/AdresDAO.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/AdresDAOsql.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/postgresql_42_6_0.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/OVChipkaart.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/OVChipkaartDAO.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/OVChipkaartDAOsql.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/DP_OV-Chipkaart.iml" beforeDir="false" afterPath="$PROJECT_DIR$/DP_OV-Chipkaart.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Main.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Reiziger.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Reiziger.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/ReizigerDAO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/ReizigerDAO.java" afterDir="false" />
@@ -46,8 +46,9 @@
   &quot;keyToString&quot;: {
     &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
     &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
     &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
-    &quot;last_opened_file_path&quot;: &quot;C:/Users/agent/IdeaProjects/DP_OV-Chipkaart/src/lib/postgresql-42.6.0.jar&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/Andre/IdeaProjects/DP_AN/src/lib/postgresql-42.6.0.jar&quot;,
     &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
     &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
     &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
@@ -71,10 +72,22 @@
       <workItem from="1694160271402" duration="9247000" />
       <workItem from="1694434699580" duration="1716000" />
       <workItem from="1694528860186" duration="7812000" />
+      <workItem from="1695410392051" duration="12160000" />
+      <workItem from="1695456297314" duration="3919000" />
     </task>
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <breakpoint enabled="true" type="java-exception">
+          <properties class="java.sql.SQLException" package="java.sql" />
+          <option name="timeStamp" value="1" />
+        </breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
   </component>
 </project>

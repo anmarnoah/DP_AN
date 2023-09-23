@@ -13,10 +13,16 @@ public class Main {
         props.setProperty("password", "root");
         Connection conn = DriverManager.getConnection(url, props);
 
+        // DAOsql aanmaken
         ReizigerDAOsql reizigerDAOsql = new ReizigerDAOsql(conn);
         AdresDAOsql adresDAOsql = new AdresDAOsql(conn, reizigerDAOsql);
         reizigerDAOsql.setAdresDAO(adresDAOsql);
-//        testReizigerDAO(reizigerDAOsql);
+
+        OVChipkaartDAOsql ovChipkaartDAOsql = new OVChipkaartDAOsql(conn);
+        ovChipkaartDAOsql.setReizigerDAO(reizigerDAOsql);
+        reizigerDAOsql.setOvChipkaartDAO(ovChipkaartDAOsql);
+        testReizigerDAO(reizigerDAOsql);
+        System.out.println();
 
 
         System.out.println("Alle Adressen:");
@@ -28,6 +34,12 @@ public class Main {
         for (Reiziger reiziger : reizigerDAOsql.findAll()) {
             System.out.println(reiziger);
         }
+
+        System.out.println("\nAlle OVChipkaarten:");
+        for (OVChipkaart ovchipkaart : ovChipkaartDAOsql.findAll()) {
+            System.out.println(ovchipkaart);
+        }
+
     }
 
     private static void testReizigerDAO(ReizigerDAO rdao) throws SQLException {
@@ -61,5 +73,14 @@ public class Main {
         rdao.delete(sietske);
         reizigers = rdao.findAll();
         System.out.println(reizigers.size() + " reizigers\n");
+
+
+        //
+        Reiziger reiziger1 = rdao.findAll().get(0);
+        System.out.println("[Test] Reiziger 1: " + reiziger1.toString());
+        Reiziger reiziger2 = rdao.findByGbdatum(reiziger1.getGeboortedatum());
+        System.out.println("       findByGbdatum Reiziger2: " + reiziger2.toString());
+        System.out.println("       Reiziger1.equals(Reiziger2): " + reiziger1.equals(reiziger2));
+        System.out.println("\n---------- END Test ReizigerDAO -------------");
     }
 }

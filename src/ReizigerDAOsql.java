@@ -5,6 +5,7 @@ import java.util.List;
 public class ReizigerDAOsql implements ReizigerDAO {
     private Connection connection;
     private AdresDAO adresDAO;
+    private OVChipkaartDAO ovChipkaartDAO;
 
     public ReizigerDAOsql(Connection connection) {
         this.connection = connection;
@@ -20,23 +21,38 @@ public class ReizigerDAOsql implements ReizigerDAO {
 
     @Override
     public boolean save(Reiziger reiziger) throws SQLException {
-        PreparedStatement st = connection.prepareStatement("INSERT INTO reiziger (reiziger_id, voorletters, tussenvoegsel, achternaam, geboortedatum) VALUES (?, ?, ?, ?, ?)");
+        PreparedStatement st = connection.prepareStatement("""
+            INSERT INTO reiziger 
+                (reiziger_id, voorletters, tussenvoegsel, achternaam, geboortedatum) 
+            VALUES 
+                (?, ?, ?, ?, ?)
+        """);
         st.setInt(1, reiziger.getId());
         st.setString(2, reiziger.getVoorletters());
         st.setString(3, reiziger.getTussenvoegsel());
         st.setString(4, reiziger.getAchternaam());
         st.setDate(5, (Date) reiziger.getGeboortedatum());
         int rowsUpdated = st.executeUpdate();
+        st.close();
 
-        if (rowsUpdated > 0) {
-            return true;
+        if (this.ovChipkaartDAO != null) {
+            for (OVChipkaart ovChipkaart : reiziger.getOvChipkaarten()) {
+                this.ovChipkaartDAO.save(ovChipkaart);
+            }
         }
-        return false;
+
+        return rowsUpdated > 0;
     }
 
     @Override
     public Reiziger findById(int id) throws SQLException {
-        PreparedStatement st = this.connection.prepareStatement("SELECT reiziger_id, voorletters, tussenvoegsel, achternaam, geboortedatum FROM reiziger WHERE reiziger_id=?");
+        PreparedStatement st = this.connection.prepareStatement("""
+            SELECT 
+                reiziger_id, voorletters, tussenvoegsel, achternaam, geboortedatum 
+            FROM reiziger 
+            WHERE 
+                reiziger_id=?
+        """);
         st.setInt(1, id);
         ResultSet rs = st.executeQuery();
         if (rs.next()) {
@@ -46,9 +62,15 @@ public class ReizigerDAOsql implements ReizigerDAO {
     }
 
     @Override
-    public Reiziger findByGbdatum(String datum) throws SQLException {
-        PreparedStatement st = this.connection.prepareStatement("SELECT reiziger_id, voorletters, tussenvoegsel, achternaam, geboortedatum FROM reiziger WHERE geboortedatum=?");
-        st.setDate(1, Date.valueOf(datum));
+    public Reiziger findByGbdatum(java.util.Date datum) throws SQLException {
+        PreparedStatement st = this.connection.prepareStatement("""
+            SELECT 
+                reiziger_id, voorletters, tussenvoegsel, achternaam, geboortedatum 
+            FROM reiziger 
+            WHERE 
+                geboortedatum=?
+        """);
+        st.setDate(1, (Date) datum);
         ResultSet rs = st.executeQuery();
         if (rs.next()) {
             return resultSetToReiziger(rs);
@@ -61,7 +83,11 @@ public class ReizigerDAOsql implements ReizigerDAO {
         List<Reiziger> reizigers = new ArrayList<>();
 
         Statement st = this.connection.createStatement();
-        ResultSet rs = st.executeQuery("SELECT reiziger_id, voorletters, tussenvoegsel, achternaam, geboortedatum FROM reiziger");
+        ResultSet rs = st.executeQuery("""
+            SELECT 
+                reiziger_id, voorletters, tussenvoegsel, achternaam, geboortedatum 
+            FROM reiziger
+        """);
         while (rs.next()) {
             reizigers.add(this.resultSetToReiziger(rs));
         }
@@ -70,7 +96,13 @@ public class ReizigerDAOsql implements ReizigerDAO {
 
     @Override
     public boolean update(Reiziger reiziger) throws SQLException {
-        PreparedStatement st = connection.prepareStatement("UPDATE reiziger SET voorletters=?, tussenvoegsel=?, achternaam=?, geboortedatum=? WHERE reiziger_id=?");
+        PreparedStatement st = connection.prepareStatement("""
+            UPDATE reiziger 
+            SET 
+                voorletters=?, tussenvoegsel=?, achternaam=?, geboortedatum=? 
+            WHERE 
+                reiziger_id=?
+        """);
         st.setString(1, reiziger.getVoorletters());
         st.setString(2, reiziger.getTussenvoegsel());
         st.setString(3, reiziger.getAchternaam());
@@ -106,5 +138,9 @@ public class ReizigerDAOsql implements ReizigerDAO {
         Reiziger reiziger = new Reiziger(reiziger_id, voorletters, tussenvoegsel, achternaam, geboortedatum);
         reiziger.setAdres(this.adresDAO.findByReiziger(reiziger));
         return reiziger;
+    }
+
+    public void setOvChipkaartDAO(OVChipkaartDAO ovChipkaartDAO) {
+        this.ovChipkaartDAO = ovChipkaartDAO;
     }
 }
