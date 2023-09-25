@@ -5,15 +5,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="d586f745-464f-4e57-8f1f-d0568143960c" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/src/Adres.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/AdresDAO.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/AdresDAOsql.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/DP_OV-Chipkaart.iml" beforeDir="false" afterPath="$PROJECT_DIR$/DP_OV-Chipkaart.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Main.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Reiziger.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Reiziger.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/ReizigerDAO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/ReizigerDAO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/ReizigerDAOsql.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/ReizigerDAOsql.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
