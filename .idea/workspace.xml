@@ -5,7 +5,10 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="d586f745-464f-4e57-8f1f-d0568143960c" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Product.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/ProductDAO.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/ProductDAOsql.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -63,6 +66,7 @@
       <workItem from="1694160271402" duration="9247000" />
       <workItem from="1694434699580" duration="1716000" />
       <workItem from="1694528860186" duration="7812000" />
+      <workItem from="1696355261065" duration="6230000" />
     </task>
     <servers />
   </component>
