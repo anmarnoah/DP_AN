@@ -4,11 +4,14 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="d586f745-464f-4e57-8f1f-d0568143960c" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/src/Product.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/ProductDAO.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/ProductDAOsql.java" afterDir="false" />
+    <list default="true" id="d586f745-464f-4e57-8f1f-d0568143960c" name="Changes" comment="P5 bijna af">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Main.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/OVChipkaart.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/OVChipkaart.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/OVChipkaartDAO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/OVChipkaartDAO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/OVChipkaartDAOsql.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/OVChipkaartDAOsql.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Product.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Product.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/ProductDAOsql.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/ProductDAOsql.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -66,11 +69,24 @@
       <workItem from="1694160271402" duration="9247000" />
       <workItem from="1694434699580" duration="1716000" />
       <workItem from="1694528860186" duration="7812000" />
-      <workItem from="1696355261065" duration="6230000" />
+      <workItem from="1696355261065" duration="7537000" />
+      <workItem from="1696422873615" duration="7246000" />
     </task>
+    <task id="LOCAL-00001" summary="P5 bijna af">
+      <created>1696361561367</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1696361561367</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="P5 bijna af" />
+    <option name="LAST_COMMIT_MESSAGE" value="P5 bijna af" />
   </component>
 </project>

@@ -28,7 +28,7 @@ public class ProductDAOsql implements ProductDAO {
         st.setInt(1, product.getProduct_nummer());
         st.setString(2, product.getNaam());
         st.setString(3, product.getBeschrijving());
-        st.setFloat(4, product.getPrijs());
+        st.setDouble(4, product.getPrijs());
         int rowsUpdated = st.executeUpdate();
         if (rowsUpdated == 0) {
             st.close();
@@ -61,18 +61,20 @@ public class ProductDAOsql implements ProductDAO {
                 """);
         st.setInt(1, productNummer);
         ResultSet resultSet = st.executeQuery();
-        st.close();
         if (resultSet.next()) {
-            return resultSetToProduct(resultSet);
+            Product returnProduct = resultSetToProduct(resultSet);
+            st.close();
+            return returnProduct;
         }
+        st.close();
         return null;
     }
 
-    private Product resultSetToProduct(ResultSet resultSet) throws SQLException {
-        int product_nummer = resultSet.getInt("product_nummer");
-        String naam = resultSet.getString("naam");
-        String beschrijving = resultSet.getString("beschrijving");
-        float prijs = resultSet.getFloat("prijs");
+    private Product resultSetToProduct(ResultSet rs) throws SQLException {
+        int product_nummer = rs.getInt("product_nummer");
+        String naam = rs.getString("naam");
+        String beschrijving = rs.getString("beschrijving");
+        float prijs = rs.getFloat("prijs");
 
         Product product = new Product(product_nummer, naam, beschrijving, prijs);
 
@@ -85,10 +87,11 @@ public class ProductDAOsql implements ProductDAO {
         st.setInt(1, product_nummer);
         ResultSet rs2 = st.executeQuery();
         while (rs2.next()) {
-            int kaart_nummer = resultSet.getInt("kaart_nummer");
+            int kaart_nummer = rs2.getInt("kaart_nummer");
             OVChipkaart ovChipkaart = ovChipkaartDAO.findByNummer(kaart_nummer);
             product.addOvChipkaart(ovChipkaart);
         }
+        rs2.close();
 
         return product;
     }
@@ -138,8 +141,16 @@ public class ProductDAOsql implements ProductDAO {
 
         for (OVChipkaart ovChipkaart : oldProduct.getOvChipkaarten()) {
 
+            if (!product.getOvChipkaarten().contains(ovChipkaart)) {
+                this.removeLinkWithOVChipkaart(product, ovChipkaart);
+            }
         }
 
+        for (OVChipkaart ovChipkaart : product.getOvChipkaarten()) {
+            if (!oldProduct.getOvChipkaarten().contains(ovChipkaart)) {
+                this.createLinkWithOVChipkaart(product, ovChipkaart);
+            }
+        }
 
         PreparedStatement st = this.connection.prepareStatement("""
                 UPDATE product
@@ -148,7 +159,7 @@ public class ProductDAOsql implements ProductDAO {
                 """);
         st.setString(1, product.getNaam());
         st.setString(2, product.getBeschrijving());
-        st.setFloat(3, product.getPrijs());
+        st.setDouble(3, product.getPrijs());
         st.setInt(4, product.getProduct_nummer());
         int rowsUpdated = st.executeUpdate();
         st.close();
@@ -156,8 +167,45 @@ public class ProductDAOsql implements ProductDAO {
         return rowsUpdated > 0;
     }
 
+    private boolean removeLinkWithOVChipkaart(Product product, OVChipkaart ovChipkaart) throws SQLException {
+        if (product == null || ovChipkaart == null) return false;
+        PreparedStatement st = this.connection.prepareStatement("""
+                DELETE FROM ov_chipkaart_product
+                WHERE kaart_nummer = ? AND product_nummer = ?
+                """);
+
+        st.setInt(1, ovChipkaart.getNummer());
+        st.setInt(2, product.getProduct_nummer());
+        int rowsUpdated = st.executeUpdate();
+
+        return rowsUpdated > 0;
+    }
+
+    private boolean createLinkWithOVChipkaart(Product product, OVChipkaart ovChipkaart) throws SQLException {
+        PreparedStatement st = this.connection.prepareStatement("""
+                INSERT INTO ov_chipkaart_product
+                    (kaart_nummer, product_nummer)
+                VALUES 
+                    (?, ?)
+                """);
+
+        st.setInt(1, ovChipkaart.getNummer());
+        st.setInt(2, product.getProduct_nummer());
+        try {
+            int rowsUpdated = st.executeUpdate();
+            return rowsUpdated > 0;
+        } catch (SQLException e) {
+            System.out.println("SQLException during createLinkWithOVChipkaart: " + e.getMessage());
+            return false;
+        }
+    }
+
     @Override
     public boolean delete(Product product) throws SQLException {
+        for (OVChipkaart ovChipkaart : product.getOvChipkaarten()) {
+            this.removeLinkWithOVChipkaart(product, ovChipkaart);
+        }
+
         PreparedStatement st = this.connection.prepareStatement("""
                 DELETE FROM product
                 WHERE product_nummer = ?

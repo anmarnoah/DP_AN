@@ -2,10 +2,10 @@ import java.sql.SQLException;
 import java.util.List;
 
 public interface OVChipkaartDAO {
-    boolean save(OVChipkaart ovChipkaart);
-    OVChipkaart findByNummer(int nummer);
-    List<OVChipkaart> findByReiziger(Reiziger reiziger);
-    List<OVChipkaart> findAll();
-    boolean update(OVChipkaart ovChipkaart);
+    boolean save(OVChipkaart ovChipkaart) throws SQLException;
+    OVChipkaart findByNummer(int nummer) throws SQLException;
+    List<OVChipkaart> findByReiziger(Reiziger reiziger) throws SQLException;
+    List<OVChipkaart> findAll() throws SQLException;
+    boolean update(OVChipkaart ovChipkaart) throws SQLException;
     boolean delete(OVChipkaart ovChipkaart) throws SQLException;
 }

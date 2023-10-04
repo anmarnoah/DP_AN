@@ -1,4 +1,6 @@
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 public class OVChipkaart {
     private int nummer;
@@ -6,6 +8,7 @@ public class OVChipkaart {
     private int klasse;
     private float saldo;
     private Reiziger reiziger;
+    private List<Product> producten = new ArrayList<>();
 
     public OVChipkaart(int nummer, Date geldigTot, int klasse, float saldo, Reiziger reiziger) {
         this.nummer = nummer;
@@ -63,8 +66,16 @@ public class OVChipkaart {
 
     public String toString(int depth) {
         if (depth >= 1 || this.reiziger == null) {
-            return("OVChipkaart{#" + this.nummer + " verloopt: " + this.geldigTot.toString() + " klasse:" + this.klasse + " saldo: " + this.saldo + "}");
+            return("OVChipkaart{#" + this.nummer + ", verloopt: " + this.geldigTot.toString() + ", klasse: " + this.klasse + ", saldo: " + this.saldo + ", Producten gelinked: " + this.producten.toArray().length + "}");
         }
-        return("OVChipkaart{#" + this.nummer + " verloopt: " + this.geldigTot.toString() + " klasse:" + this.klasse + " saldo: " + this.saldo + " " + this.reiziger.toString(depth + 1) + "}");
+        return("OVChipkaart{#" + this.nummer + ", verloopt: " + this.geldigTot.toString() + ", klasse: " + this.klasse + ", saldo: " + this.saldo + ", Producten gelinked: " + this.producten.toArray().length + ", " + this.reiziger.toString(depth + 1) + "}");
+    }
+
+    public List<Product> getProducten() {
+        return producten;
+    }
+
+    public void addProduct(Product product) {
+        this.producten.add(product);
     }
 }

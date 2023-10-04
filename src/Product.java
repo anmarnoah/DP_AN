@@ -5,10 +5,10 @@ public class Product {
     private int product_nummer;
     private String naam;
     private String beschrijving;
-    private float prijs;
+    private double prijs;
     private List<OVChipkaart> ovChipkaarten = new ArrayList<>();
 
-    public Product(int product_nummer, String naam, String beschrijving, float prijs) {
+    public Product(int product_nummer, String naam, String beschrijving, double prijs) {
         this.product_nummer = product_nummer;
         this.naam = naam;
         this.beschrijving = beschrijving;
@@ -39,7 +39,7 @@ public class Product {
         this.beschrijving = beschrijving;
     }
 
-    public float getPrijs() {
+    public double getPrijs() {
         return prijs;
     }
 
@@ -54,6 +54,9 @@ public class Product {
     public void addOvChipkaart(OVChipkaart ovChipkaart) {
         this.ovChipkaarten.add(ovChipkaart);
     }
+    public void removeOvChipkaart(OVChipkaart ovChipkaart) {
+        this.ovChipkaarten.remove(ovChipkaart);
+    }
 
     @Override
     public boolean equals(Object object) {
@@ -63,5 +66,9 @@ public class Product {
             return compareProduct.product_nummer == this.product_nummer;
         }
         return false;
+    }
+
+    public String toString() {
+        return("Product{#" + this.product_nummer + ", naam: " + this.naam + ", beschrijving: " + this.beschrijving + ", prijs: " + this.prijs + ", OVChipkaarten gelinked: " + this.ovChipkaarten.toArray().length + "}");
     }
 }
