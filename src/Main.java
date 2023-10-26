@@ -28,7 +28,8 @@ public class Main {
 
         // Tests
         //testReizigerDAO(reizigerDAOsql);
-        testProductDAO(productDAOsql, ovChipkaartDAOsql, reizigerDAOsql);
+        //testProductDAO(productDAOsql, ovChipkaartDAOsql, reizigerDAOsql);
+        testAdresDAO(adresDAOsql, reizigerDAOsql);
 
 
 //        System.out.println("Alle Adressen:");
@@ -50,6 +51,48 @@ public class Main {
 //        for (Product product : productDAOsql.findAll()) {
 //            System.out.println(product);
 //        }
+    }
+
+    private static void testAdresDAO(AdresDAO adao, ReizigerDAO rdao) throws SQLException {
+        System.out.println("\n---------- Test AdresDAO -------------");
+
+        List<Adres> adressen = adao.findAll();
+        System.out.println("[Test] AdresDao.findAll() geeft de volgende producten:");
+        for (Adres adres : adressen) {
+            System.out.println("    " + adres);
+        }
+        System.out.println();
+
+        System.out.print("\n![i] Om een Reiziger te koppelen aan het adres maken we een nieuwe Reiziger aan met id 54321 die we ook opslaan\n!");
+        Reiziger reiziger = new Reiziger(54321, "AN", null, "Ram", Date.valueOf("2002-08-28"));
+        rdao.save(reiziger);
+
+        // Maak een nieuwe adres aan en persisteer deze in de database
+        Adres adres = new Adres(12345, "3581WB", "11","Bloemstraat", "Utrecht", reiziger);
+        System.out.print("[Test] Eerst " + adressen.size() + " adressen, na AdresDAO.save(): ");
+        try {
+            adao.save(adres);
+        } catch (SQLException ignored) {}
+        adressen = adao.findAll();
+        System.out.println(adressen.size() + " adressen\n");
+
+        // .update() testen
+        System.out.println("[Test] Adres voor AdresDAO.update(): ");
+        System.out.println(adres);
+        System.out.println("\n[Test] Adres na AdresDAO.update() met AdresDAO.findById(): ");
+        adres.setStraat("nieuwestraat");
+        adao.update(adres);
+        System.out.println(adao.findById(adres.getId()));
+
+        System.out.println("\n[Test] Adres met AdresDAO.findByReiziger(): ");
+        System.out.println(adao.findByReiziger(reiziger));
+
+        // .delete testen
+        System.out.println("\n[Test] Eerst " + adressen.size() + " adressen, na AdresDAO.delete(): ");
+        adao.delete(adres);
+        rdao.delete(reiziger);
+        adressen = adao.findAll();
+        System.out.print(adressen.size() + " adressen\n");
     }
 
     private static void testProductDAO(ProductDAO pdao, OVChipkaartDAO ovdao, ReizigerDAO rdao) throws SQLException {

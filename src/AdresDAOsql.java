@@ -25,59 +25,112 @@ public class AdresDAOsql implements AdresDAO {
 
     @Override
     public boolean save(Adres adres) throws SQLException {
-        PreparedStatement st = this.connection.prepareStatement("INSERT INTO adres (adres_id, postcode, huisnummer, straat, woonplaats, reiziger_id) VALUES (?, ?, ?, ?, ?, ?)");
-        st.setInt(1, adres.getId());
-        st.setString(2, adres.getPostcode());
-        st.setString(3, adres.getHuisnummer());
-        st.setString(4, adres.getStraat());
-        st.setString(5, adres.getWoonplaats());
-        st.setInt(6, adres.getReiziger().getId());
-        int rowsUpdated = st.executeUpdate();
+        try (PreparedStatement st = this.connection.prepareStatement("""
+                INSERT INTO adres 
+                    (adres_id, postcode, huisnummer, straat, woonplaats, reiziger_id) 
+                VALUES (?, ?, ?, ?, ?, ?)""")) {
+            st.setInt(1, adres.getId());
+            st.setString(2, adres.getPostcode());
+            st.setString(3, adres.getHuisnummer());
+            st.setString(4, adres.getStraat());
+            st.setString(5, adres.getWoonplaats());
+            st.setInt(6, adres.getReiziger().getId());
+            int rowsUpdated = st.executeUpdate();
 
-        if (rowsUpdated > 0) {
-            return true;
+            return rowsUpdated > 0;
+        } catch (SQLException e) {
+            System.err.printf("Ging niet helemaal goed: %s\n", e.getMessage());
+            throw e;
         }
-        return false;
     }
 
     @Override
     public boolean update(Adres adres) throws SQLException {
-        PreparedStatement st = this.connection.prepareStatement("UPDATE adres SET postcode=?, huisnummer=?, straat=?, woonplaats=?, reiziger_id=? WHERE adres_id=?");
-        st.setString(1, adres.getPostcode());
-        st.setString(2, adres.getHuisnummer());
-        st.setString(3, adres.getStraat());
-        st.setString(4, adres.getWoonplaats());
-        st.setInt(5, adres.getReiziger().getId());
-        st.setInt(6, adres.getId());
-        int rowsUpdated = st.executeUpdate();
-
-        if (rowsUpdated > 0) {
-            return true;
+        try (PreparedStatement st = this.connection.prepareStatement("""
+                UPDATE adres 
+                SET 
+                    postcode=?, 
+                    huisnummer=?, 
+                    straat=?, 
+                    woonplaats=?, 
+                    reiziger_id=? 
+                WHERE 
+                    adres_id=?""")) {
+            st.setString(1, adres.getPostcode());
+            st.setString(2, adres.getHuisnummer());
+            st.setString(3, adres.getStraat());
+            st.setString(4, adres.getWoonplaats());
+            st.setInt(5, adres.getReiziger().getId());
+            st.setInt(6, adres.getId());
+            int rowsUpdated = st.executeUpdate();
+                return rowsUpdated > 0;
+        } catch (SQLException e) {
+            System.err.printf("Ging niet helemaal goed: %s\n", e.getMessage());
+            throw e;
         }
-        return false;
     }
 
     @Override
     public boolean delete(Adres adres) throws SQLException {
-        PreparedStatement st = connection.prepareStatement("DELETE FROM reiziger WHERE adres_id=?");
-        st.setInt(1, adres.getId());
-        int rowsUpdated = st.executeUpdate();
+        try (PreparedStatement st = connection.prepareStatement("""
+                DELETE FROM adres 
+                WHERE adres_id=?""")) {
+            st.setInt(1, adres.getId());
+            int rowsUpdated = st.executeUpdate();
 
-        if (rowsUpdated > 0) {
-            return true;
+            return rowsUpdated > 0;
+        } catch (SQLException e) {
+            System.err.printf("Ging niet helemaal goed: %s\n", e.getMessage());
+            throw e;
         }
-        return false;
+    }
+
+    @Override
+    public Adres findById(int id) throws SQLException {
+        try (PreparedStatement st = this.connection.prepareStatement("""
+                SELECT 
+                    adres_id, 
+                    postcode, 
+                    huisnummer, 
+                    straat, 
+                    woonplaats, 
+                    reiziger_id 
+                FROM adres 
+                WHERE adres_id=?""")) {
+            st.setInt(1, id);
+            ResultSet rs = st.executeQuery();
+            if (rs.next()) {
+                return resultSetToAdres(rs);
+            }
+            return null;
+        } catch (SQLException e) {
+            System.err.printf("Ging niet helemaal goed: %s\n", e.getMessage());
+            throw e;
+        }
     }
 
     @Override
     public Adres findByReiziger(Reiziger reiziger) throws SQLException {
-        PreparedStatement st = this.connection.prepareStatement("SELECT adres_id, postcode, huisnummer, straat, woonplaats, reiziger_id FROM adres WHERE reiziger_id=?");
-        st.setInt(1, reiziger.getId());
-        ResultSet rs = st.executeQuery();
-        if (rs.next()) {
-            return resultSetToAdres(rs, reiziger);
+        try (PreparedStatement st = this.connection.prepareStatement("""
+                SELECT 
+                    adres_id, 
+                    postcode, 
+                    huisnummer, 
+                    straat, 
+                    woonplaats, 
+                    reiziger_id 
+                FROM adres 
+                WHERE reiziger_id=?""")) {
+            st.setInt(1, reiziger.getId());
+            ResultSet rs = st.executeQuery();
+            if (rs.next()) {
+                return resultSetToAdres(rs, reiziger);
+            }
+            return null;
+        } catch (SQLException e) {
+            System.err.printf("Ging niet helemaal goed: %s\n", e.getMessage());
+            throw e;
         }
-        return null;
     }
 
     private Adres resultSetToAdres(ResultSet resultSet) throws SQLException {
@@ -100,11 +153,23 @@ public class AdresDAOsql implements AdresDAO {
     public List<Adres> findAll() throws SQLException {
         List<Adres> adressen = new ArrayList<>();
 
-        Statement st = this.connection.createStatement();
-        ResultSet rs = st.executeQuery("SELECT adres_id, postcode, huisnummer, straat, woonplaats, reiziger_id FROM adres");
-        while (rs.next()) {
-            adressen.add(this.resultSetToAdres(rs));
+        try (Statement st = this.connection.createStatement()) {
+            ResultSet rs = st.executeQuery("""
+                SELECT 
+                    adres_id, 
+                    postcode, 
+                    huisnummer, 
+                    straat, 
+                    woonplaats, 
+                    reiziger_id 
+                FROM adres""");
+            while (rs.next()) {
+                adressen.add(this.resultSetToAdres(rs));
+            }
+            return adressen;
+        } catch (SQLException e) {
+            System.err.printf("Ging niet helemaal goed: %s\n", e.getMessage());
+            throw e;
         }
-        return adressen;
     }
 }
