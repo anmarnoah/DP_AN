@@ -5,15 +5,15 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ProductDAOsql implements ProductDAO {
+public class ProductDAOPsql implements ProductDAO {
     private Connection connection;
     private OVChipkaartDAO ovChipkaartDAO;
 
-    public ProductDAOsql(Connection connection) {
+    public ProductDAOPsql(Connection connection) {
         this(connection, null);
     }
 
-    public ProductDAOsql(Connection connection, OVChipkaartDAO ovChipkaartDAO) {
+    public ProductDAOPsql(Connection connection, OVChipkaartDAO ovChipkaartDAO) {
         this.connection = connection;
         this.ovChipkaartDAO = ovChipkaartDAO;
     }
@@ -140,7 +140,6 @@ public class ProductDAOsql implements ProductDAO {
         Product oldProduct = this.findByProductNummer(product.getProduct_nummer());
 
         for (OVChipkaart ovChipkaart : oldProduct.getOvChipkaarten()) {
-
             if (!product.getOvChipkaarten().contains(ovChipkaart)) {
                 this.removeLinkWithOVChipkaart(product, ovChipkaart);
             }

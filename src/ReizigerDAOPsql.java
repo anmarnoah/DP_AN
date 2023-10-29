@@ -2,12 +2,12 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ReizigerDAOsql implements ReizigerDAO {
+public class ReizigerDAOPsql implements ReizigerDAO {
     private Connection connection;
     private AdresDAO adresDAO;
     private OVChipkaartDAO ovChipkaartDAO;
 
-    public ReizigerDAOsql(Connection connection) {
+    public ReizigerDAOPsql(Connection connection) {
         this.connection = connection;
     }
 
@@ -32,7 +32,9 @@ public class ReizigerDAOsql implements ReizigerDAO {
 
             if (this.ovChipkaartDAO != null) {
                 for (OVChipkaart ovChipkaart : reiziger.getOvChipkaarten()) {
-                    this.ovChipkaartDAO.save(ovChipkaart);
+                    if (this.ovChipkaartDAO.findByNummer(ovChipkaart.getNummer()) == null) {
+                        this.ovChipkaartDAO.save(ovChipkaart);
+                    }
                 }
             }
 
@@ -114,6 +116,20 @@ public class ReizigerDAOsql implements ReizigerDAO {
 
     @Override
     public boolean update(Reiziger reiziger) throws SQLException {
+        Reiziger oldReiziger = this.findById(reiziger.getId());
+
+        for (OVChipkaart ovChipkaart : oldReiziger.getOvChipkaarten()) {
+            if (!reiziger.getOvChipkaarten().contains(ovChipkaart)) {
+                this.removeLinkWithOVChipkaart(reiziger, ovChipkaart);
+            }
+        }
+
+        for (OVChipkaart ovChipkaart : reiziger.getOvChipkaarten()) {
+            if (!oldReiziger.getOvChipkaarten().contains(ovChipkaart)) {
+                this.createLinkWithOVChipkaart(reiziger, ovChipkaart);
+            }
+        }
+
         try (PreparedStatement st = connection.prepareStatement("""
             UPDATE reiziger 
             SET 
@@ -132,6 +148,42 @@ public class ReizigerDAOsql implements ReizigerDAO {
         } catch (SQLException e) {
             System.err.printf("Ging niet helemaal goed: %s\n", e.getMessage());
             throw e;
+        }
+    }
+
+    private boolean removeLinkWithOVChipkaart(Reiziger reiziger, OVChipkaart ovChipkaart) throws SQLException {
+        if (reiziger == null || ovChipkaart == null) return false;
+        PreparedStatement st = this.connection.prepareStatement("""
+                DELETE FROM ov_chipkaart
+                WHERE kaart_nummer = ? AND reiziger_id = ?
+                """);
+
+        st.setInt(1, ovChipkaart.getNummer());
+        st.setInt(2, reiziger.getId());
+        int rowsUpdated = st.executeUpdate();
+
+        return rowsUpdated > 0;
+    }
+
+    private boolean createLinkWithOVChipkaart(Reiziger reiziger, OVChipkaart ovChipkaart) throws SQLException {
+        PreparedStatement st = this.connection.prepareStatement("""
+                INSERT INTO ov_chipkaart
+                    (kaart_nummer, geldig_tot, klasse, saldo, reiziger_id)
+                VALUES 
+                    (?, ?, ?, ?, ?)
+                """);
+
+        st.setInt(1, ovChipkaart.getNummer());
+        st.setDate(2, (Date) ovChipkaart.getGeldigTot());
+        st.setInt(3, ovChipkaart.getKlasse());
+        st.setFloat(4, ovChipkaart.getSaldo());
+        st.setInt(5, reiziger.getId());
+        try {
+            int rowsUpdated = st.executeUpdate();
+            return rowsUpdated > 0;
+        } catch (SQLException e) {
+            System.out.println("SQLException during createLinkWithOVChipkaart: " + e.getMessage());
+            return false;
         }
     }
 

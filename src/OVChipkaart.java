@@ -78,4 +78,15 @@ public class OVChipkaart {
     public void addProduct(Product product) {
         this.producten.add(product);
     }
+
+    @Override
+    public boolean equals(Object object) {
+        if (object instanceof OVChipkaart compareOVChipkaart) {
+            return compareOVChipkaart.nummer == this.nummer &&
+                    compareOVChipkaart.geldigTot.equals(this.geldigTot) &&
+                    compareOVChipkaart.klasse == this.klasse &&
+                    compareOVChipkaart.saldo == this.saldo;
+        }
+        return false;
+    }
 }

@@ -2,15 +2,15 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class AdresDAOsql implements AdresDAO {
+public class AdresDAOPsql implements AdresDAO {
     private Connection connection;
     private ReizigerDAO reizigerDAO;
 
-    public AdresDAOsql(Connection connection) {
+    public AdresDAOPsql(Connection connection) {
         this(connection, null);
     }
 
-    public AdresDAOsql(Connection connection, ReizigerDAO reizigerDAO) {
+    public AdresDAOPsql(Connection connection, ReizigerDAO reizigerDAO) {
         this.connection = connection;
         this.reizigerDAO = reizigerDAO;
     }

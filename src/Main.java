@@ -15,40 +15,41 @@ public class Main {
 
         // DAOsql aanmaken
         // # ------------------------------------------------------------------ #
-        ReizigerDAOsql reizigerDAOsql = new ReizigerDAOsql(conn);
-        AdresDAOsql adresDAOsql = new AdresDAOsql(conn, reizigerDAOsql);
-        reizigerDAOsql.setAdresDAO(adresDAOsql);
+        ReizigerDAOPsql reizigerDAOPsql = new ReizigerDAOPsql(conn);
+        AdresDAOPsql adresDAOPsql = new AdresDAOPsql(conn, reizigerDAOPsql);
+        reizigerDAOPsql.setAdresDAO(adresDAOPsql);
 
-        OVChipkaartDAOsql ovChipkaartDAOsql = new OVChipkaartDAOsql(conn, reizigerDAOsql);
-        reizigerDAOsql.setOvChipkaartDAO(ovChipkaartDAOsql);
+        OVChipkaartDAOPsql ovChipkaartDAOPsql = new OVChipkaartDAOPsql(conn, reizigerDAOPsql);
+        reizigerDAOPsql.setOvChipkaartDAO(ovChipkaartDAOPsql);
 
-        ProductDAOsql productDAOsql = new ProductDAOsql(conn, ovChipkaartDAOsql);
-        ovChipkaartDAOsql.setProductDAO(productDAOsql);
+        ProductDAOPsql productDAOPsql = new ProductDAOPsql(conn, ovChipkaartDAOPsql);
+        ovChipkaartDAOPsql.setProductDAO(productDAOPsql);
         // # ------------------------------------------------------------------ #
 
         // Tests
-        //testReizigerDAO(reizigerDAOsql);
-        //testProductDAO(productDAOsql, ovChipkaartDAOsql, reizigerDAOsql);
-        testAdresDAO(adresDAOsql, reizigerDAOsql);
+        //testReizigerDAO(reizigerDAOPsql);
+        //testProductDAO(productDAOPsql, ovChipkaartDAOPsql, reizigerDAOPsql);
+        //testAdresDAO(adresDAOPsql, reizigerDAOPsql);
+        testOVChipkaartDao(ovChipkaartDAOPsql, reizigerDAOPsql);
 
 
 //        System.out.println("Alle Adressen:");
-//        for (Adres adres : adresDAOsql.findAll()) {
+//        for (Adres adres : adresDAOPsql.findAll()) {
 //            System.out.println(adres);
 //        }
 //
 //        System.out.println("\nAlle Reizigers:");
-//        for (Reiziger reiziger : reizigerDAOsql.findAll()) {
+//        for (Reiziger reiziger : reizigerDAOPsql.findAll()) {
 //            System.out.println(reiziger);
 //        }
 //
 //        System.out.println("\nAlle OVChipkaarten:");
-//        for (OVChipkaart ovchipkaart : ovChipkaartDAOsql.findAll()) {
+//        for (OVChipkaart ovchipkaart : ovChipkaartDAOPsql.findAll()) {
 //            System.out.println(ovchipkaart);
 //        }
 //
 //        System.out.println("\nAlle Producten:");
-//        for (Product product : productDAOsql.findAll()) {
+//        for (Product product : productDAOPsql.findAll()) {
 //            System.out.println(product);
 //        }
     }
@@ -200,5 +201,37 @@ public class Main {
         System.out.println("       findByGbdatum Reiziger2: " + reiziger2.toString());
         System.out.println("       Reiziger1.equals(Reiziger2): " + reiziger1.equals(reiziger2));
         System.out.println("\n---------- END Test ReizigerDAO -------------");
+    }
+
+    public static void testOVChipkaartDao(OVChipkaartDAO odao, ReizigerDAO rdao) throws SQLException {
+        System.out.println("\n---------- Test OVChipkaartDAO -------------");
+        // Haal alle ovchipkaarten op uit de database
+        List<OVChipkaart> ovchipkaarten = odao.findAll();
+        System.out.println("[Test] OVChipkaartDAO.findAll() geeft de volgende OVChipkaarten:");
+        for (OVChipkaart ovChipkaart : ovchipkaarten) {
+            System.out.println(ovChipkaart);
+        }
+        System.out.println();
+
+        System.out.print("\n[i] Om een Reiziger te koppelen aan de OVChipkaart maken we een nieuwe Reiziger aan met id 54321 die we ook opslaan\n");
+        Reiziger reiziger = new Reiziger(54321, "AN", null, "Ram", Date.valueOf("2002-08-28"));
+        rdao.save(reiziger);
+
+        OVChipkaart ovChipkaart = new OVChipkaart(55555, Date.valueOf("2030-01-01"), 1, 999, reiziger);
+        System.out.print("[Test] Eerst " + ovchipkaarten.size() + " OVChipkaarten, na OVChipkaartDAO.save(): ");
+        odao.save(ovChipkaart);
+        ovchipkaarten = odao.findAll();
+        System.out.println(ovchipkaarten.size() + " OVChipkaarten\n");
+
+        System.out.println("[i] We veranderen het saldo van de OVChipkaart om OVChipkaartDAO.update() te testen");
+        System.out.println("[Test] OVChipkaart eerst met OVChipkaartDAO.findByNummer(): \n" + odao.findByNummer(ovChipkaart.getNummer()) + "\n");
+        ovChipkaart.setSaldo(444);
+        odao.update(ovChipkaart);
+        System.out.println("[Test] OVChipkaart na OVChipkaartDAO.update() met ReizigerDAO.findByReiziger(): \n" + odao.findByReiziger(reiziger).get(0) + "\n");
+
+        System.out.print("[Test] Eerst " + ovchipkaarten.size() + " OVChipkaarten, na OVChipkaartDAO.delete(): ");
+        odao.delete(ovChipkaart);
+        rdao.delete(reiziger);
+        System.out.println(odao.findAll().size() + " OVChipkaarten");
     }
 }

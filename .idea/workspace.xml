@@ -4,14 +4,14 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="d586f745-464f-4e57-8f1f-d0568143960c" name="Changes" comment="P5 bijna af">
+    <list default="true" id="d586f745-464f-4e57-8f1f-d0568143960c" name="Changes" comment="P4 fixed">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/AdresDAOsql.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/AdresDAOPsql.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Main.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/OVChipkaart.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/OVChipkaart.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/OVChipkaartDAO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/OVChipkaartDAO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/OVChipkaartDAOsql.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/OVChipkaartDAOsql.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Product.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Product.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/ProductDAOsql.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/ProductDAOsql.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/OVChipkaartDAOsql.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/OVChipkaartDAOPsql.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/ProductDAOsql.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/ProductDAOPsql.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/ReizigerDAOsql.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/ReizigerDAOPsql.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -71,6 +71,10 @@
       <workItem from="1694528860186" duration="7812000" />
       <workItem from="1696355261065" duration="7537000" />
       <workItem from="1696422873615" duration="7246000" />
+      <workItem from="1698358880573" duration="5083000" />
+      <workItem from="1698390290530" duration="3725000" />
+      <workItem from="1698604734205" duration="749000" />
+      <workItem from="1698621401168" duration="1234000" />
     </task>
     <task id="LOCAL-00001" summary="P5 bijna af">
       <created>1696361561367</created>
@@ -79,14 +83,35 @@
       <option name="project" value="LOCAL" />
       <updated>1696361561367</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="p3fixed">
+      <created>1698358944408</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1698358944408</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
   </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="P5 bijna af" />
-    <option name="LAST_COMMIT_MESSAGE" value="P5 bijna af" />
+    <MESSAGE value="p3fixed" />
+    <MESSAGE value="p4 fix bijna" />
+    <MESSAGE value="P4 fixed" />
+    <option name="LAST_COMMIT_MESSAGE" value="P4 fixed" />
   </component>
 </project>
